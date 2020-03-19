@@ -35,6 +35,15 @@ blocks:
   - name: Run tests
     task:
       jobs:
+        - name: Elixir master, OTP 22
+          commands:
+            - sem-version erlang 22
+            - sem-version elixir master
+            - elixir -v
+            - checkout
+            - mix local.rebar --force
+            - mix deps.get
+            - mix test
         - name: Elixir 1.10.2, OTP 22
           commands:
             - sem-version erlang 22
