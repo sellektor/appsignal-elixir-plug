@@ -10,7 +10,7 @@ blocks:
       prologue:
         commands:
           - sem-version erlang 22
-          - sem-version elixir 1.10.2
+          - sem-version elixir 1.10.3
           - elixir -v
           - checkout
           - mix local.rebar --force
@@ -55,19 +55,19 @@ blocks:
             - mix local.hex --force
             - mix deps.get
             - mix test
-        - name: Elixir 1.10.2, OTP 22
+        - name: Elixir 1.10.3, OTP 22
           commands:
             - sem-version erlang 22
-            - sem-version elixir 1.10.2
+            - sem-version elixir 1.10.3
             - elixir -v
             - checkout
             - mix local.rebar --force
             - mix deps.get
             - mix test
-        - name: Elixir 1.10.2, OTP 21
+        - name: Elixir 1.10.3, OTP 21
           commands:
             - sem-version erlang 21
-            - sem-version elixir 1.10.2
+            - sem-version elixir 1.10.3
             - elixir -v
             - checkout
             - mix local.rebar --force
@@ -85,7 +85,7 @@ blocks:
         - name: Elixir 1.9.4, OTP 21
           commands:
             - sem-version erlang 21
-            - sem-version elixir 1.10.2
+            - sem-version elixir 1.10.3
             - elixir -v
             - checkout
             - mix local.rebar --force
@@ -94,7 +94,7 @@ blocks:
         - name: Elixir 1.9.4, OTP 20
           commands:
             - sem-version erlang 20
-            - sem-version elixir 1.10.2
+            - sem-version elixir 1.10.3
             - elixir -v
             - checkout
             - mix local.rebar --force
