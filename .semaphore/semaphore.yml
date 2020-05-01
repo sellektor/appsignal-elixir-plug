@@ -86,7 +86,7 @@ blocks:
         - name: Elixir 1.9.4, OTP 21
           commands:
             - sem-version erlang 21
-            - sem-version elixir 1.10.3
+            - sem-version elixir 1.9.4
             - elixir -v
             - checkout
             - mix local.rebar --force
@@ -95,7 +95,7 @@ blocks:
         - name: Elixir 1.9.4, OTP 20
           commands:
             - sem-version erlang 20
-            - sem-version elixir 1.10.3
+            - sem-version elixir 1.9.4
             - elixir -v
             - checkout
             - mix local.rebar --force
