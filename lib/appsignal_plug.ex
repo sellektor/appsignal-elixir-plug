@@ -32,6 +32,7 @@ defmodule Appsignal.Plug do
 
       @tracer Application.get_env(:appsignal, :appsignal_tracer, Appsignal.Tracer)
       @span Application.get_env(:appsignal, :appsignal_span, Appsignal.Span)
+      @sample_rate Application.get_env(:appsignal, :sample_rate, 1)
 
       use Plug.ErrorHandler
 
@@ -44,28 +45,32 @@ defmodule Appsignal.Plug do
       end
 
       def call(conn, opts) do
-        Appsignal.instrument(fn span ->
-          _ = @span.set_namespace(span, "http_request")
+        if :random.uniform() <= @sample_rate do
+          Appsignal.instrument(fn span ->
+            _ = @span.set_namespace(span, "http_request")
 
-          try do
-            super(conn, opts)
-          catch
-            kind, reason ->
-              stack = __STACKTRACE__
+            try do
+              super(conn, opts)
+            catch
+              kind, reason ->
+                stack = __STACKTRACE__
 
-              _ =
-                span
-                |> Appsignal.Plug.handle_error(kind, reason, stack, conn)
-                |> @tracer.close_span()
+                _ =
+                  span
+                  |> Appsignal.Plug.handle_error(kind, reason, stack, conn)
+                  |> @tracer.close_span()
 
-              @tracer.ignore()
-              :erlang.raise(kind, reason, stack)
-          else
-            conn ->
-              _ = Appsignal.Plug.set_conn_data(span, conn)
-              Plug.Conn.put_private(conn, :appsignal_plug_instrumented, true)
-          end
-        end)
+                @tracer.ignore()
+                :erlang.raise(kind, reason, stack)
+            else
+              conn ->
+                _ = Appsignal.Plug.set_conn_data(span, conn)
+                Plug.Conn.put_private(conn, :appsignal_plug_instrumented, true)
+            end
+          end)
+        else
+          super(conn, opts)
+        end
       end
 
       defoverridable call: 2
